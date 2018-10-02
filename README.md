@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/cocoapods/l/FFAES.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
 [![Platform](https://img.shields.io/cocoapods/p/FFAES.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
 
-### [中文教程](https://github.com/imlifengfeng/FFRouter/blob/master/README.md#中文使用说明)
+### [中文教程](https://github.com/imlifengfeng/FFRouter#中文使用说明)
 
 FFRouter is a powerful and easy-to-use URL routing library in iOS that supports URL Rewrite, allowing the APP to dynamically modify the relevant routing logic after publishing. It is more efficient to find URLs based on matching rather than traversal. Integration and use are very simple!
 
@@ -38,7 +38,7 @@ First
 ```objective-c
 #import "FFRouter.h"
 ```
-#####1、Basic Usage
+##### 1、Basic Usage
 ```objective-c
 /**
  Register URL
@@ -131,7 +131,7 @@ First
  */
 + (void)setLogEnabled:(BOOL)enable;
 ```
-######【Notes】
+###### 【Notes】
 (1)Register URL:
 ```objective-c
 [FFRouter registerRouteURL:@"protocol://page/routerDetails/:id" handler:^(NSDictionary *routerParameters) {
@@ -173,7 +173,7 @@ NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"]
 [FFRouter routeURL:@"protocol://page/routerDetails?nickname=imlifengfeng" withParameters:@{@"img":[UIImage imageNamed:@"router_test_img"]}];
 ```
 
-#####2、URL Rewrite
+##### 2、URL Rewrite
 ```objective-c
 /**
  According to the set of Rules, go to rewrite URL.
@@ -210,7 +210,7 @@ NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"]
  */
 + (void)removeAllRewriteRules;
 ```
-######【Notes】
+###### 【Notes】
 (1)You can add a Rewrite rule using `regular`, for example：
 you want to When URL:`https://www.amazon.com/search/Atomic_bomb` is opened, intercept it and use the locally registered URL:`protocol://page/routerDetails?product=Atomic_bomb` to open it.
 First, add a Rewrite rule：
@@ -249,7 +249,7 @@ the same as，`https://www.taobao.com/search/%e5%8e%9f%e5%ad%90%e5%bc%b9`for the
 $1=%e5%8e%9f%e5%ad%90%e5%bc%b9
 $#1=原子弹
 ```
-#####2、FFRouterNavigation
+##### 2、FFRouterNavigation
 Considering the frequent use of routing to configure the jump between `UIViewController`, an additional tool `FFRouterNavigation` has been added to make it easier to control jumps between `UIViewController`. Use as follows:
 ```objective-c
 /**
@@ -369,7 +369,7 @@ end
 ```objective-c
 #import "FFRouter.h"
 ```
-#####1、基本使用
+##### 1、基本使用
 ```objective-c
 /**
  注册 url
@@ -462,7 +462,7 @@ end
  */
 + (void)setLogEnabled:(BOOL)enable;
 ```
-######【备注】
+###### 【备注】
 (1)注册 URL:
 ```objective-c
 [FFRouter registerRouteURL:@"protocol://page/routerDetails/:id" handler:^(NSDictionary *routerParameters) {
@@ -503,7 +503,7 @@ NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"]
 [FFRouter routeURL:@"protocol://page/routerDetails?nickname=imlifengfeng" withParameters:@{@"img":[UIImage imageNamed:@"router_test_img"]}];
 ```
 
-#####2、URL Rewrite
+##### 2、URL Rewrite
 ```objective-c
 /**
  根据设置的 Rules 去 rewrite 一个 URL
@@ -540,7 +540,7 @@ NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"]
  */
 + (void)removeAllRewriteRules;
 ```
-######【备注】
+###### 【备注】
 (1)可以使用`正则`添加一条 Rewrite 规则，例如：
 要实现打开 URL:`https://www.taobao.com/search/原子弹`时，将其拦截，改用本地已注册的 URL:`protocol://page/routerDetails?product=原子弹`打开。
 首先添加一条 Rewrite 规则：
@@ -579,7 +579,7 @@ $$1=%e5%8e%9f%e5%ad%90%e5%bc%b9
 $1=%e5%8e%9f%e5%ad%90%e5%bc%b9
 $#1=原子弹
 ```
-#####2、FFRouterNavigation
+##### 2、FFRouterNavigation
 考虑到经常用路由配置`UIViewController`之间的跳转，所以增加了额外的工具`FFRouterNavigation`来更方便地控制`UIViewController`之间的跳转。具体使用方法如下：
 ```objective-c
 /**
