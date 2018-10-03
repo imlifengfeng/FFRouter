@@ -136,14 +136,17 @@ First
 ```objective-c
 [FFRouter registerRouteURL:@"protocol://page/routerDetails/:id" handler:^(NSDictionary *routerParameters) {
    //Callbacks of Route's URL match with this registration URL 
+   //routerParameters contains all the parameters that are passed
 }];
 
 [FFRouter registerRouteURL:@"wildcard://*" handler:^(NSDictionary *routerParameters) {
-   //Callbacks of Route's URL match with this registration URL  
+   //Callbacks of Route's URL match with this registration URL
+   //routerParameters contains all the parameters that are passed  
 }];
 
 [FFRouter registerRouteURL:@"protocol://page/routerObjectDetails" handler:^(NSDictionary *routerParameters) {
    //Callbacks of Route's URL match with this registration URL 
+   //routerParameters contains all the parameters that are passed
 }];
 ```
 The parameters in the URL can be obtained by `routerParameters`，`routerParameters[FFRouterParameterURLKey]`Is the full URL.
@@ -172,6 +175,11 @@ NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"]
 ```objective-c
 [FFRouter routeURL:@"protocol://page/routerDetails?nickname=imlifengfeng" withParameters:@{@"img":[UIImage imageNamed:@"router_test_img"]}];
 ```
+If you only need to pass common parameters, you can splice parameters directly after URL：
+```objective-c
+[FFRouter routeURL:@"protocol://page/routerDetails?nickname=imlifengfeng&id=666&parameters......"];
+```
+Then get these parameters from `routerParameters`. for example：`routerParameters[@"nickname"]`
 
 ##### 2、URL Rewrite
 ```objective-c
@@ -325,18 +333,6 @@ This project is used under the <a href="http://opensource.org/licenses/MIT" targ
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 # 中文使用说明
 FFRouter 是 iOS 中一个强大且易用的 URL 路由库，支持 URL Rewrite，使 APP 在发布之后也可以动态修改相关路由逻辑。基于匹配查找 URL，效率高。集成和使用都非常简单！
 ### 功能
@@ -466,15 +462,18 @@ end
 (1)注册 URL:
 ```objective-c
 [FFRouter registerRouteURL:@"protocol://page/routerDetails/:id" handler:^(NSDictionary *routerParameters) {
-   //Route的URL与本次注册URL匹配时的回调  
+   //Route的URL与本次注册URL匹配时的回调 
+   //routerParameters中包含了传递过来的所有参数 
 }];
 
 [FFRouter registerRouteURL:@"wildcard://*" handler:^(NSDictionary *routerParameters) {
-   //Route的URL与本次注册URL匹配时的回调  
+   //Route的URL与本次注册URL匹配时的回调 
+   //routerParameters中包含了传递过来的所有参数 
 }];
 
 [FFRouter registerRouteURL:@"protocol://page/routerObjectDetails" handler:^(NSDictionary *routerParameters) {
    //Route的URL与本次注册URL匹配时的回调  
+   //routerParameters中包含了传递过来的所有参数
 }];
 ```
 可通过`routerParameters`获取 URL 中的参数，`routerParameters[FFRouterParameterURLKey]`为完整的URL.
@@ -502,6 +501,11 @@ NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"]
 ```objective-c
 [FFRouter routeURL:@"protocol://page/routerDetails?nickname=imlifengfeng" withParameters:@{@"img":[UIImage imageNamed:@"router_test_img"]}];
 ```
+如果只需要传递普通参数，直接在URL后拼接参数即可：
+```objective-c
+[FFRouter routeURL:@"protocol://page/routerDetails?nickname=imlifengfeng&id=666&parameters......"];
+```
+之后从`routerParameters`中获取这些参数。例如：`routerParameters[@"nickname"]`
 
 ##### 2、URL Rewrite
 ```objective-c
