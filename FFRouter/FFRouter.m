@@ -173,6 +173,9 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
 }
 
 - (void)removeRouteURL:(NSString *)routeUrl{
+    if (self.routes.count <= 0) {
+        return;
+    }
     NSMutableArray *pathComponents = [NSMutableArray arrayWithArray:[self pathComponentsFromURL:routeUrl]];
     BOOL firstPoll = YES;
     
