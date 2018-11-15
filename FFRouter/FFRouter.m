@@ -47,6 +47,11 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
     [[self sharedInstance] addObjectRouteURL:routeURL handler:handlerBlock];
 }
 
++ (void)registerCallbackRouteURL:(NSString *)routeURL handler:(FFCallbackRouterHandler)handlerBlock {
+    FFRouterLog(@"registerCallbackRouteURL:%@",routeURL);
+    [[self sharedInstance] addCallbackRouteURL:routeURL handler:handlerBlock];
+}
+
 + (BOOL)canRouteURL:(NSString *)URL {
     NSString *rewriteURL = [FFRouterRewrite rewriteURL:URL];
     return [[self sharedInstance] achieveParametersFromURL:rewriteURL] ? YES : NO;
@@ -57,13 +62,13 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
 }
 
 + (void)routeURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters {
-    FFRouterLog(@"Routing to URL:%@\nparameters:%@",URL,parameters);
+    FFRouterLog(@"Route to URL:%@\nparameters:%@",URL,parameters);
     NSString *rewriteURL = [FFRouterRewrite rewriteURL:URL];
     URL = [rewriteURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     NSMutableDictionary *routerParameters = [[self sharedInstance] achieveParametersFromURL:URL];
     if(!routerParameters){
-        FFRouterErrorLog(@"Routing unregistered URL:%@",URL);
+        FFRouterErrorLog(@"Route unregistered URL:%@",URL);
         [[self sharedInstance] unregisterURLBeRouterWithURL:URL];
         return;
     }
@@ -92,13 +97,13 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
 }
 
 + (id)routeObjectURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters {
-    FFRouterLog(@"Routing to ObjectURL:%@\nparameters:%@",URL,parameters);
+    FFRouterLog(@"Route to ObjectURL:%@\nparameters:%@",URL,parameters);
     NSString *rewriteURL = [FFRouterRewrite rewriteURL:URL];
     URL = [rewriteURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     NSMutableDictionary *routerParameters = [[self sharedInstance] achieveParametersFromURL:URL];
     if(!routerParameters){
-        FFRouterErrorLog(@"Routing unregistered ObjectURL:%@",URL);
+        FFRouterErrorLog(@"Route unregistered ObjectURL:%@",URL);
         [[self sharedInstance] unregisterURLBeRouterWithURL:URL];
         return nil;
     }
@@ -118,6 +123,46 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
     }
     return nil;
 }
+
++ (void)routeCallbackURL:(NSString *)URL targetCallback:(FFRouterCallback)targetCallback {
+    [self routeCallbackURL:URL withParameters:nil targetCallback:targetCallback];
+}
+
++ (void)routeCallbackURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters targetCallback:(FFRouterCallback)targetCallback {
+    FFRouterLog(@"Route to URL:%@\nparameters:%@",URL,parameters);
+    NSString *rewriteURL = [FFRouterRewrite rewriteURL:URL];
+    URL = [rewriteURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    NSMutableDictionary *routerParameters = [[self sharedInstance] achieveParametersFromURL:URL];
+    if(!routerParameters){
+        FFRouterErrorLog(@"Route unregistered URL:%@",URL);
+        [[self sharedInstance] unregisterURLBeRouterWithURL:URL];
+        return;
+    }
+    
+    [routerParameters enumerateKeysAndObjectsUsingBlock:^(id key, NSString *obj, BOOL *stop) {
+        if ([obj isKindOfClass:[NSString class]]) {
+            routerParameters[key] = [NSString stringWithFormat:@"%@",obj];
+        }
+    }];
+    
+    if (routerParameters) {
+        FFCallbackRouterHandler handler = routerParameters[FFRouterHandlerBlockKey];
+        if (parameters) {
+            [routerParameters addEntriesFromDictionary:parameters];
+        }
+        
+        if (handler) {
+            [routerParameters removeObjectForKey:FFRouterHandlerBlockKey];
+            handler(routerParameters,^(id callbackObjc){
+                if (targetCallback) {
+                    targetCallback(callbackObjc);
+                }
+            });
+        }
+    }
+}
+
 
 + (void)routeUnregisterURLHandler:(FFRouterUnregisterURLHandler)handler {
     [[self sharedInstance] setRouterUnregisterURLHandler:handler];
@@ -146,6 +191,13 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
 }
 
 - (void)addObjectRouteURL:(NSString *)routeUrl handler:(FFObjectRouterHandler)handlerBlock {
+    NSMutableDictionary *subRoutes = [self addURLPattern:routeUrl];
+    if (handlerBlock && subRoutes) {
+        subRoutes[FFRouterHandlerBlockKey] = [handlerBlock copy];
+    }
+}
+
+- (void)addCallbackRouteURL:(NSString *)routeUrl handler:(FFCallbackRouterHandler)handlerBlock {
     NSMutableDictionary *subRoutes = [self addURLPattern:routeUrl];
     if (handlerBlock && subRoutes) {
         subRoutes[FFRouterHandlerBlockKey] = [handlerBlock copy];
@@ -254,16 +306,14 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
         NSArray *subRoutesKeys =[subRoutes.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
             return [obj2 compare:obj1 options:comparisonOptions];
         }];
-
+        
         for (NSString* key in subRoutesKeys) {
             
             if([pathComponent isEqualToString:key]){
-                //Full match, highest priority.
                 pathComponentsSurplus --;
                 subRoutes = subRoutes[key];
                 break;
             }else if([key hasPrefix:@":"] && pathComponentsSurplus == 1){
-                //Parameter match, priority is next to full match.
                 subRoutes = subRoutes[key];
                 NSString *newKey = [key substringFromIndex:1];
                 NSString *newPathComponent = pathComponent;
@@ -279,7 +329,6 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
                 parameters[newKey] = newPathComponent;
                 break;
             }else if([key isEqualToString:FFRouterWildcard] && !wildcardMatched){
-                //Wildcard match, minimum priority
                 subRoutes = subRoutes[key];
                 wildcardMatched = YES;
                 break;

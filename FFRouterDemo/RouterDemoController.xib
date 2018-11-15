@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RouterDemoController">
             <connections>
+                <outlet property="testLabel" destination="yZg-Qc-tg5" id="xTd-Hp-wFC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -36,46 +37,59 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDQ-KB-Smf">
                     <rect key="frame" x="0.0" y="115" width="375" height="30"/>
-                    <state key="normal" title="通过routeURL获取返回值"/>
+                    <state key="normal" title="通过routeObjectURL获取返回值"/>
                     <connections>
                         <action selector="btn3Click:" destination="-1" eventType="touchUpInside" id="AU1-Qo-oCh"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7bE-hZ-vn8">
-                    <rect key="frame" x="0.0" y="145" width="375" height="30"/>
+                    <rect key="frame" x="0.0" y="175" width="375" height="30"/>
                     <state key="normal" title="通配符(*)方式注册URL"/>
                     <connections>
-                        <action selector="btn4Click:" destination="-1" eventType="touchUpInside" id="P14-2E-vtg"/>
+                        <action selector="btn5Click:" destination="-1" eventType="touchUpInside" id="1dA-8v-qLZ"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5m-bf-sz8">
-                    <rect key="frame" x="0.0" y="175" width="375" height="30"/>
+                    <rect key="frame" x="0.0" y="205" width="375" height="30"/>
                     <state key="normal" title="route一个未注册的URL"/>
                     <connections>
-                        <action selector="btn5Click:" destination="-1" eventType="touchUpInside" id="Avv-9z-Xv1"/>
+                        <action selector="btn6Click:" destination="-1" eventType="touchUpInside" id="8bZ-Ju-HUG"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4og-gP-VhS">
-                    <rect key="frame" x="0.0" y="205" width="375" height="30"/>
+                    <rect key="frame" x="0.0" y="235" width="375" height="30"/>
                     <state key="normal" title="Rewrite一个URL"/>
                     <connections>
-                        <action selector="btn6Click:" destination="-1" eventType="touchUpInside" id="lMg-6x-bPZ"/>
+                        <action selector="btn7Click:" destination="-1" eventType="touchUpInside" id="EjA-gS-u4a"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zPO-82-d9n">
-                    <rect key="frame" x="0.0" y="235" width="375" height="30"/>
+                    <rect key="frame" x="0.0" y="265" width="375" height="30"/>
                     <state key="normal" title="Rewrite一个URL并对某值URL Encode"/>
                     <connections>
-                        <action selector="btn7Click:" destination="-1" eventType="touchUpInside" id="TDo-jv-GPI"/>
+                        <action selector="btn8Click:" destination="-1" eventType="touchUpInside" id="crR-DJ-Z2h"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQF-XY-2vu">
-                    <rect key="frame" x="0.0" y="265" width="375" height="30"/>
+                    <rect key="frame" x="0.0" y="295" width="375" height="30"/>
                     <state key="normal" title="Rewrite一个URL并对某值URL Decode"/>
                     <connections>
-                        <action selector="btn8Click:" destination="-1" eventType="touchUpInside" id="Ovl-rj-dfm"/>
+                        <action selector="btn9Click:" destination="-1" eventType="touchUpInside" id="dhk-4x-wmk"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="alN-mc-x8V">
+                    <rect key="frame" x="0.0" y="145" width="375" height="30"/>
+                    <state key="normal" title="通过routeCallbackURL异步回调获取返回值"/>
+                    <connections>
+                        <action selector="btn4Click:" destination="-1" eventType="touchUpInside" id="y1y-bO-vY9"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZg-Qc-tg5">
+                    <rect key="frame" x="0.0" y="517" width="375" height="0.0"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -83,15 +97,21 @@
                 <constraint firstItem="e4o-K6-SdQ" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="35" id="2tU-u0-iw7"/>
                 <constraint firstItem="q5m-bf-sz8" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="3ZQ-DI-467"/>
                 <constraint firstItem="fDQ-KB-Smf" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="4A9-Mo-7fa"/>
+                <constraint firstItem="yZg-Qc-tg5" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="89R-jJ-22J"/>
                 <constraint firstItem="g8Y-wx-GOX" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="8t3-YG-Ql2"/>
+                <constraint firstItem="7bE-hZ-vn8" firstAttribute="top" secondItem="alN-mc-x8V" secondAttribute="bottom" id="AVe-y8-Y4y"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="e4o-K6-SdQ" secondAttribute="trailing" id="Ab3-gl-fKx"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="yZg-Qc-tg5" secondAttribute="trailing" id="Ce3-01-sma"/>
                 <constraint firstItem="g8Y-wx-GOX" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="Fvt-xM-3sJ"/>
+                <constraint firstItem="alN-mc-x8V" firstAttribute="top" secondItem="fDQ-KB-Smf" secondAttribute="bottom" id="G4D-8f-yy6"/>
                 <constraint firstItem="7bE-hZ-vn8" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="HC6-wD-Ejd"/>
-                <constraint firstItem="7bE-hZ-vn8" firstAttribute="top" secondItem="fDQ-KB-Smf" secondAttribute="bottom" id="Jn1-b7-otf"/>
                 <constraint firstAttribute="trailing" secondItem="zPO-82-d9n" secondAttribute="trailing" id="RAp-OM-vJD"/>
+                <constraint firstItem="alN-mc-x8V" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="VAi-jN-rdr"/>
+                <constraint firstItem="alN-mc-x8V" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="ZyV-KF-sqY"/>
                 <constraint firstItem="zPO-82-d9n" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="abq-qr-RIc"/>
                 <constraint firstItem="q5m-bf-sz8" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="asA-Sh-97d"/>
                 <constraint firstItem="oQF-XY-2vu" firstAttribute="top" secondItem="zPO-82-d9n" secondAttribute="bottom" id="bH4-wk-9ON"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="yZg-Qc-tg5" secondAttribute="bottom" constant="150" id="byK-SO-Pbv"/>
                 <constraint firstItem="4og-gP-VhS" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="cdb-cA-GX6"/>
                 <constraint firstItem="fDQ-KB-Smf" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="csU-sa-Mgi"/>
                 <constraint firstItem="4og-gP-VhS" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="fGX-MR-iIF"/>

@@ -19,6 +19,8 @@
 		382EC3C3216266BC00213F66 /* RouterDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382EC3C1216266BB00213F66 /* RouterDetailController.m */; };
 		382EC3C821626A9700213F66 /* RouterDemoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382EC3C621626A9700213F66 /* RouterDemoController.m */; };
 		382EC3C921626A9700213F66 /* RouterDemoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 382EC3C721626A9700213F66 /* RouterDemoController.xib */; };
+		3843739F219D71FE00B47615 /* RouterCallbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3843739D219D71FE00B47615 /* RouterCallbackController.m */; };
+		384373A0219D71FE00B47615 /* RouterCallbackController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3843739E219D71FE00B47615 /* RouterCallbackController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,9 @@
 		382EC3C521626A9700213F66 /* RouterDemoController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterDemoController.h; sourceTree = "<group>"; };
 		382EC3C621626A9700213F66 /* RouterDemoController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterDemoController.m; sourceTree = "<group>"; };
 		382EC3C721626A9700213F66 /* RouterDemoController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouterDemoController.xib; sourceTree = "<group>"; };
+		3843739C219D71FE00B47615 /* RouterCallbackController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouterCallbackController.h; sourceTree = "<group>"; };
+		3843739D219D71FE00B47615 /* RouterCallbackController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouterCallbackController.m; sourceTree = "<group>"; };
+		3843739E219D71FE00B47615 /* RouterCallbackController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouterCallbackController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +89,9 @@
 				382EC3BF216266BB00213F66 /* RouterDetailController.h */,
 				382EC3C1216266BB00213F66 /* RouterDetailController.m */,
 				382EC3C0216266BB00213F66 /* RouterDetailController.xib */,
+				3843739C219D71FE00B47615 /* RouterCallbackController.h */,
+				3843739D219D71FE00B47615 /* RouterCallbackController.m */,
+				3843739E219D71FE00B47615 /* RouterCallbackController.xib */,
 				382EC3962162262000213F66 /* Info.plist */,
 				382EC3B72162657000213F66 /* Other */,
 			);
@@ -176,6 +184,7 @@
 				382EC3922162262000213F66 /* Assets.xcassets in Resources */,
 				382EC3C2216266BC00213F66 /* RouterDetailController.xib in Resources */,
 				382EC3C921626A9700213F66 /* RouterDemoController.xib in Resources */,
+				384373A0219D71FE00B47615 /* RouterCallbackController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,6 +199,7 @@
 				382EC3AA2162271F00213F66 /* FFRouter.m in Sources */,
 				382EC3A92162271F00213F66 /* FFRouterLogger.m in Sources */,
 				382EC3C821626A9700213F66 /* RouterDemoController.m in Sources */,
+				3843739F219D71FE00B47615 /* RouterCallbackController.m in Sources */,
 				382EC3C3216266BC00213F66 /* RouterDetailController.m in Sources */,
 				382EC38A2162261E00213F66 /* AppDelegate.m in Sources */,
 				382EC3A82162271F00213F66 /* FFRouterNavigation.m in Sources */,

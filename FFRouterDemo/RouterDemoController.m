@@ -9,8 +9,11 @@
 #import "RouterDemoController.h"
 #import "FFRouter.h"
 #import "RouterDetailController.h"
+#import "RouterCallbackController.h"
 
 @interface RouterDemoController ()
+
+@property (weak, nonatomic) IBOutlet UILabel *testLabel;
 
 @end
 
@@ -49,6 +52,16 @@
         return str;
     }];
     
+    //注册 protocol://page/RouterCallbackDetails
+    [FFRouter registerCallbackRouteURL:@"protocol://page/RouterCallbackDetails" handler:^(NSDictionary *routerParameters, FFRouterCallback targetCallback) {
+        RouterCallbackController *callbackVC = [[RouterCallbackController alloc]init];
+        callbackVC.infoStr = [NSString stringWithFormat:@"%@",routerParameters];
+        [callbackVC testCallBack:^(NSString *callbackStr) {
+            targetCallback(callbackStr);
+        }];
+        [FFRouterNavigation pushViewController:callbackVC animated:YES];
+    }];
+    
      //注册 wildcard://*
     [FFRouter registerRouteURL:@"wildcard://*" handler:^(NSDictionary *routerParameters) {
         RouterDetailController *mRouterDetailController = [[RouterDetailController alloc]init];
@@ -81,34 +94,41 @@
     [FFRouter routeURL:@"protocol://page/routerDetails?nickname=imlifengfeng&nation=中国" withParameters:@{@"img":[UIImage imageNamed:@"router_test_img"]}];
 }
 
-//通过routeURL获取返回值
+//通过routeObjectURL获取返回值
 - (IBAction)btn3Click:(id)sender {
     NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"];
     NSLog(@"routeURL并获取返回值:%@",ret);
 }
 
-//通配符(*)方式注册URL
+//通过routeCallbackURL异步回调获取返回值
 - (IBAction)btn4Click:(id)sender {
+    [FFRouter routeCallbackURL:@"protocol://page/RouterCallbackDetails?nickname=imlifengfeng&nation=中国" targetCallback:^(id callbackObjc) {
+        self.testLabel.text = [NSString stringWithFormat:@"%@",callbackObjc];
+    }];
+}
+
+//通配符(*)方式注册URL
+- (IBAction)btn5Click:(id)sender {
     [FFRouter routeURL:@"wildcard://path/path2/path3?nickname=imlifengfeng&nation=中国"];
 }
 
 //route一个未注册的URL
-- (IBAction)btn5Click:(id)sender {
+- (IBAction)btn6Click:(id)sender {
     [FFRouter routeURL:@"protocol://hahahhahahhahhaha"];
 }
 
 //Rewrite一个URL
-- (IBAction)btn6Click:(id)sender {
+- (IBAction)btn7Click:(id)sender {
      [FFRouter routeURL:@"https://www.baidu.com/wd/66666"];
 }
 
 //Rewrite一个URL并对某值URL Encode
-- (IBAction)btn7Click:(id)sender {
+- (IBAction)btn8Click:(id)sender {
     [FFRouter routeURL:@"https://www.taobao.com/search/原子弹"];
 }
 
 //Rewrite一个URL并对某值URL Decode
-- (IBAction)btn8Click:(id)sender {
+- (IBAction)btn9Click:(id)sender {
     [FFRouter routeURL:@"https://www.jd.com/search/%E5%8E%9F%E5%AD%90%E5%BC%B9"];
 }
 

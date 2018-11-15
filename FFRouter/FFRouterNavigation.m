@@ -10,7 +10,8 @@
 
 @interface FFRouterNavigation()
 
-@property (nonatomic,assign)BOOL autoHidesBottomBar;
+@property (nonatomic,assign) BOOL autoHidesBottomBar;
+@property (nonatomic,assign) BOOL autoHidesBottomBarConfigured;
 
 @end
 
@@ -28,6 +29,7 @@
 
 #pragma mark - Config
 + (void)autoHidesBottomBarWhenPushed:(BOOL)hide {
+    [[self sharedInstance] setAutoHidesBottomBarConfigured:hide];
     [[self sharedInstance] setAutoHidesBottomBar:hide];
 }
 
@@ -95,7 +97,7 @@
     NSArray *oldViewCtrls = currentNav.childViewControllers;
     NSArray *newViewCtrls = nil;
     
-    if (viewControllers.count > 0) {
+    if (viewControllers.count > 0 && [[self sharedInstance] autoHidesBottomBarConfigured]) {
         UIViewController *tempVC = [viewControllers firstObject];
         tempVC.hidesBottomBarWhenPushed = [[self sharedInstance] autoHidesBottomBar];
     }

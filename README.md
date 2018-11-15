@@ -41,26 +41,35 @@ First
 ##### 1、Basic Usage
 ```objective-c
 /**
- Register URL
-
+ Register URL,use it with 'routeURL:' and 'routeURL: withParameters:'.
+ 
  @param routeURL Registered URL
- @param handlerBlock Callback after routing
+ @param handlerBlock Callback after route
  */
 + (void)registerRouteURL:(NSString *)routeURL handler:(FFRouterHandler)handlerBlock;
 
 /**
- Register URL, the URL registered by this way can be returned to Object after Route
-
+ Register URL,use it with 'routeObjectURL:' and ‘routeObjectURL: withParameters:’,can return a Object.
+ 
  @param routeURL Registered URL
- @param handlerBlock Callback after routing.which can return a Object in callback.
+ @param handlerBlock Callback after route, and you can get a Object in this callback.
  */
 + (void)registerObjectRouteURL:(NSString *)routeURL handler:(FFObjectRouterHandler)handlerBlock;
+
+/**
+ Registered URL, use it with `routeCallbackURL: targetCallback:'and `routeCallback URL: withParameters: targetCallback:', calls back `targetCallback' asynchronously to return an Object
+ 
+ @param routeURL Registered URL
+ @param handlerBlock Callback after route,There is a `targetCallback' in `handlerBlock', which corresponds to the `targetCallback:' in `routeCallbackURL: targetCallback:'and `routeCallbackURL: withParameters: targetCallback:', which can be used for asynchronous callback to return an Object.
+ */
++ (void)registerCallbackRouteURL:(NSString *)routeURL handler:(FFCallbackRouterHandler)handlerBlock;
+
 
 
 
 /**
  Determine whether URL can be Route (whether it has been registered).
-
+ 
  @param URL URL to be verified
  @return Can it be routed
  */
@@ -68,16 +77,17 @@ First
 
 
 
+
 /**
  Route a URL
-
+ 
  @param URL URL to be routed
  */
 + (void)routeURL:(NSString *)URL;
 
 /**
  Route a URL and bring additional parameters.
-
+ 
  @param URL URL to be routed
  @param parameters Additional parameters
  */
@@ -85,15 +95,15 @@ First
 
 /**
  Route a URL and get the returned Object
-
+ 
  @param URL URL to be routed
  @return Returned Object
  */
 + (id)routeObjectURL:(NSString *)URL;
 
 /**
- Route a URL and bring additional parameters.get the returned Object
-
+ Route a URL and bring additional parameters. get the returned Object
+ 
  @param URL URL to be routed
  @param parameters Additional parameters
  @return Returned Object
@@ -103,17 +113,39 @@ First
 
 
 /**
- Route callback for an unregistered URL
+ Route a URL, 'targetCallBack' can asynchronously callback to return a Object.
+ 
+ @param URL URL to be routed
+ @param targetCallback asynchronous callback
+ */
++ (void)routeCallbackURL:(NSString *)URL targetCallback:(FFRouterCallback)targetCallback;
 
+
+/**
+ Route a URL with additional parameters, and 'targetCallBack' can asynchronously callback to return a Object.
+ 
+ @param URL URL to be routed
+ @param parameters Additional parameters
+ @param targetCallback asynchronous callback
+ */
++ (void)routeCallbackURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters targetCallback:(FFRouterCallback)targetCallback;
+
+
+
+
+/**
+ Route callback for an unregistered URL
+ 
  @param handler Callback
  */
 + (void)routeUnregisterURLHandler:(FFRouterUnregisterURLHandler)handler;
 
 
 
+
 /**
  Cancel registration of a URL
-
+ 
  @param URL URL to be cancelled
  */
 + (void)unregisterRouteURL:(NSString *)URL;
@@ -124,9 +156,10 @@ First
 + (void)unregisterAllRoutes;
 
 
+
 /**
  Whether to display Log for debugging
-
+ 
  @param enable YES or NO.The default is NO
  */
 + (void)setLogEnabled:(BOOL)enable;
@@ -169,8 +202,20 @@ And return the corresponding Object in `handlerBlock`, for example：
 //Gets the returned value
 NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"];
 ```
+<br><br>(3)If you want to get the returned Object through an asynchronous callback after routeURL, you can register and Route URL using the following method:
+```objective-c
+//Register URL and return to Object by callback at the necessary time.
+[FFRouter registerCallbackRouteURL:@"protocol://page/RouterCallbackDetails" handler:^(NSDictionary *routerParameters, FFRouterCallback targetCallBack) {
+       //When necessary, return to Object through'targetCallBack'callback.
+       targetCallBack(@"Any Object");
+}];
 
-<br><br>(3)If you need to transfer non conventional objects as parameters, such as `UIImage`，You can use the following ways
+//When Route URL, by 'targetCallback' callbacks to get Object returned
+[FFRouter routeCallbackURL:@"protocol://page/RouterCallbackDetails?nickname=imlifengfeng" targetCallback:^(id callbackObjc) {
+        self.testLabel.text = [NSString stringWithFormat:@"%@",callbackObjc];
+    }];
+```
+<br><br>(4)If you need to transfer non conventional objects as parameters, such as `UIImage`，You can use the following ways
 ：
 ```objective-c
 [FFRouter routeURL:@"protocol://page/routerDetails?nickname=imlifengfeng" withParameters:@{@"img":[UIImage imageNamed:@"router_test_img"]}];
@@ -368,7 +413,7 @@ end
 ##### 1、基本使用
 ```objective-c
 /**
- 注册 url
+ 注册 url,与 ‘routeURL:’ 和 ‘routeURL: withParameters:’ 配合使用
 
  @param routeURL 要注册的 URL
  @param handlerBlock URL 被 Route 后的回调
@@ -376,12 +421,21 @@ end
 + (void)registerRouteURL:(NSString *)routeURL handler:(FFRouterHandler)handlerBlock;
 
 /**
- 注册 URL,通过该方式注册的 URL 被 Route 后可返回一个 Object
+ 注册 URL,与 'routeObjectURL:' 和 ‘routeObjectURL: withParameters:’ 配合使用,可返回一个 Object
 
  @param routeURL 要注册的 URL
  @param handlerBlock URL 被 Route 后的回调,可在回调中返回一个 Object
  */
 + (void)registerObjectRouteURL:(NSString *)routeURL handler:(FFObjectRouterHandler)handlerBlock;
+
+/**
+ 注册 URL,与 ‘routeCallbackURL: targetCallBack:’ 和 ‘routeCallbackURL: withParameters: targetCallBack:’ 配合使用，可异步回调返回一个 Object
+
+ @param routeURL 要注册的 URL
+ @param handlerBlock URL 被 Route 后的回调,handlerBlock 中有一个 targetCallBack ,对应 ‘routeCallbackURL: targetCallBack:’ 和 ‘routeCallbackURL: withParameters: targetCallBack:’ 中的 targetCallBack，可用于异步回调返回一个 Object
+ */
++ (void)registerCallbackRouteURL:(NSString *)routeURL handler:(FFCallbackRouterHandler)handlerBlock;
+
 
 
 
@@ -395,17 +449,18 @@ end
 
 
 
+
 /**
  Route 一个 URL
 
- @param URL 要 Router 的 URL
+ @param URL 要 Route 的 URL
  */
 + (void)routeURL:(NSString *)URL;
 
 /**
  Route 一个 URL，并带上额外参数
 
- @param URL 要 Router 的 URL
+ @param URL 要 Route 的 URL
  @param parameters 额外参数
  */
 + (void)routeURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters;
@@ -413,7 +468,7 @@ end
 /**
  Route 一个 URL，可获得返回的 Object
 
- @param URL 要 Router 的 URL
+ @param URL 要 Route 的 URL
  @return 返回的 Object
  */
 + (id)routeObjectURL:(NSString *)URL;
@@ -421,11 +476,32 @@ end
 /**
  Route 一个 URL，并带上额外参数，可获得返回的 Object
 
- @param URL 要 Router 的 URL
+ @param URL 要 Route 的 URL
  @param parameters 额外参数
  @return 返回的 Object
  */
 + (id)routeObjectURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters;
+
+
+
+/**
+ Route 一个 URL,targetCallBack 可异步回调以返回一个 Object
+
+ @param URL 要 Route 的 URL
+ @param targetCallback 异步回调
+ */
++ (void)routeCallbackURL:(NSString *)URL targetCallback:(FFRouterCallback)targetCallback;
+
+
+/**
+ Route 一个 URL,并带上额外参数,targetCallBack 可异步回调以返回一个 Object
+
+ @param URL 要 Route 的 URL
+ @param parameters 额外参数
+ @param targetCallback 异步回调
+ */
++ (void)routeCallbackURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters targetCallback:(FFRouterCallback)targetCallback;
+
 
 
 
@@ -435,6 +511,7 @@ end
  @param handler 回调
  */
 + (void)routeUnregisterURLHandler:(FFRouterUnregisterURLHandler)handler;
+
 
 
 
@@ -449,6 +526,7 @@ end
  取消注册所有 URL
  */
 + (void)unregisterAllRoutes;
+
 
 
 /**
@@ -496,8 +574,20 @@ Route 一个 URL 并获取返回值时，需要使用如下方法注册 URL：
 //获取返回的值
 NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"];
 ```
+<br><br>(3)如果想要 routeURL 后通过异步回调获取返回的 Object，可使用下面方法注册和 Route URL：
+```objective-c
+//注册并在必要时间通过回调返回对应 Object
+[FFRouter registerCallbackRouteURL:@"protocol://page/RouterCallbackDetails" handler:^(NSDictionary *routerParameters, FFRouterCallback targetCallBack) {
+       //在必要时候通过 targetCallBack 回调去返回对应 Object
+       targetCallBack(@"任意Object");
+}];
 
-<br><br>(3)如果需要传递非常规对象作为参数，如`UIImage`等，可使用如下方式：
+//Route 时通过 ‘targetCallback’ 回调获取返回的对应 Object
+[FFRouter routeCallbackURL:@"protocol://page/RouterCallbackDetails?nickname=imlifengfeng" targetCallback:^(id callbackObjc) {
+        self.testLabel.text = [NSString stringWithFormat:@"%@",callbackObjc];
+    }];
+```
+<br><br>(4)如果需要传递非常规对象作为参数，如`UIImage`等，可使用如下方式：
 ```objective-c
 [FFRouter routeURL:@"protocol://page/routerDetails?nickname=imlifengfeng" withParameters:@{@"img":[UIImage imageNamed:@"router_test_img"]}];
 ```

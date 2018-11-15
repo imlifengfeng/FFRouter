@@ -11,9 +11,6 @@
 #define FFRouterLogLevel(lvl,fmt,...)\
 [FFRouterLogger log : YES                                      \
 level : lvl                                                  \
-file : __FILE__                                            \
-function : __PRETTY_FUNCTION__                       \
-line : __LINE__                                           \
 format : (fmt), ## __VA_ARGS__]
 
 #define FFRouterLog(fmt,...)\
@@ -42,9 +39,6 @@ typedef NS_ENUM(NSUInteger,FFRouterLoggerLevel){
 
 + (void)log:(BOOL)asynchronous
       level:(NSInteger)level
-       file:(const char *)file
-   function:(const char *)function
-       line:(NSUInteger)line
-     format:(NSString *)format, ... ;
+     format:(NSString *)format, ...;
 
 @end

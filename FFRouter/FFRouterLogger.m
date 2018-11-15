@@ -44,15 +44,12 @@ static dispatch_queue_t __logQueue__ ;
 
 + (void)log:(BOOL)asynchronous
       level:(NSInteger)level
-       file:(const char *)file
-   function:(const char *)function
-       line:(NSUInteger)line
      format:(NSString *)format, ... {
     @try{
         va_list args;
         va_start(args, format);
         NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
-        [self.sharedInstance log:asynchronous message:message level:level file:file function:function line:line];
+        [self.sharedInstance log:asynchronous message:message level:level];
         va_end(args);
     } @catch(NSException *e){
         
@@ -61,12 +58,9 @@ static dispatch_queue_t __logQueue__ ;
 
 - (void)log:(BOOL)asynchronous
     message:(NSString *)message
-      level:(NSInteger)level
-       file:(const char *)file
-   function:(const char *)function
-       line:(NSUInteger)line {
+      level:(NSInteger)level {
     @try{
-        NSString *logMessage = [[NSString alloc]initWithFormat:@"[FFRouterLog][%@]  %s [line %lu]    %s %@",[self descriptionForLevel:level],function,(unsigned long)line,[@"" UTF8String],message];
+        NSString *logMessage = [[NSString alloc]initWithFormat:@"[FFRouterLog][%@] %@",[self descriptionForLevel:level],message];
         if (__enableLog__) {
             NSLog(@"%@",logMessage);
         }
