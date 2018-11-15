@@ -93,8 +93,6 @@ typedef void (^FFRouterUnregisterURLHandler)(NSString *routerURL);
  */
 + (id)routeObjectURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters;
 
-
-
 /**
  Route a URL, 'targetCallBack' can asynchronously callback to return a Object.
  
@@ -102,7 +100,6 @@ typedef void (^FFRouterUnregisterURLHandler)(NSString *routerURL);
  @param targetCallback asynchronous callback
  */
 + (void)routeCallbackURL:(NSString *)URL targetCallback:(FFRouterCallback)targetCallback;
-
 
 /**
  Route a URL with additional parameters, and 'targetCallBack' can asynchronously callback to return a Object.

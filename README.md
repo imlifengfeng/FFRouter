@@ -15,6 +15,7 @@ FFRouter is a powerful and easy-to-use URL routing library in iOS that supports 
 - [x] Support URL Rewrite
 - [x] Support get the original URL parameter or URLComponents when Rewrite, and can be URL Encode or Decode
 - [x] Support get an Object by URL
+- [x] Support get an Object by asynchronous callback when Route URL
 - [x] Support Transferring unconventional objects when Route URL
 - [x] Support Route an unregistered URL unified callback
 
@@ -110,8 +111,6 @@ First
  */
 + (id)routeObjectURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters;
 
-
-
 /**
  Route a URL, 'targetCallBack' can asynchronously callback to return a Object.
  
@@ -119,7 +118,6 @@ First
  @param targetCallback asynchronous callback
  */
 + (void)routeCallbackURL:(NSString *)URL targetCallback:(FFRouterCallback)targetCallback;
-
 
 /**
  Route a URL with additional parameters, and 'targetCallBack' can asynchronously callback to return a Object.
@@ -183,7 +181,7 @@ First
 }];
 ```
 The parameters in the URL can be obtained by `routerParameters`，`routerParameters[FFRouterParameterURLKey]`Is the full URL.
-<br><br>(2)When you need to use the following methods：
+<br><br><br>(2)When you need to use the following methods：
 ```objective-c
 + (id)routeObjectURL:(NSString *)URL;
 ```
@@ -387,6 +385,7 @@ FFRouter 是 iOS 中一个强大且易用的 URL 路由库，支持 URL Rewrite�
 - [x] 支持 URL Rewrite
 - [x] 支持 Rewrite 时获取原 URL 参数或 URLComponents，并可对其进行URL Encode或 Decode
 - [x] 支持通过 URL 获取 Object
+- [x] 支持 Route URL 时通过异步回调的方式获取 Object
 - [x] 支持 Route URL 时传递非常规对象
 - [x] 支持 Route 一个未注册的 URL 时统一回调
 
@@ -482,8 +481,6 @@ end
  */
 + (id)routeObjectURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters;
 
-
-
 /**
  Route 一个 URL,targetCallBack 可异步回调以返回一个 Object
 
@@ -491,7 +488,6 @@ end
  @param targetCallback 异步回调
  */
 + (void)routeCallbackURL:(NSString *)URL targetCallback:(FFRouterCallback)targetCallback;
-
 
 /**
  Route 一个 URL,并带上额外参数,targetCallBack 可异步回调以返回一个 Object
@@ -555,7 +551,7 @@ end
 }];
 ```
 可通过`routerParameters`获取 URL 中的参数，`routerParameters[FFRouterParameterURLKey]`为完整的URL.
-<br><br>(2)当需要通过以下方法：
+<br><br><br>(2)当需要通过以下方法：
 ```objective-c
 + (id)routeObjectURL:(NSString *)URL;
 ```
