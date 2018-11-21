@@ -1,8 +1,8 @@
 # FFRouter
 
-[![Version](https://img.shields.io/cocoapods/v/FFAES.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
-[![License](https://img.shields.io/cocoapods/l/FFAES.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
-[![Platform](https://img.shields.io/cocoapods/p/FFAES.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
+[![Version](https://img.shields.io/cocoapods/v/FFRouter.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
+[![License](https://img.shields.io/cocoapods/l/FFRouter.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
+[![Platform](https://img.shields.io/cocoapods/p/FFRouter.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
 
 ### [中文教程](https://github.com/imlifengfeng/FFRouter#中文使用说明)
 
@@ -183,7 +183,7 @@ First
 }];
 ```
 The parameters in the URL can be obtained by `routerParameters`，`routerParameters[FFRouterParameterURLKey]`Is the full URL.
-<br>Three ways of registration and Route：
+<br><br>Three ways of registration and Route：
 ```objective-c
 //Way 1:
 + (void)registerRouteURL:(NSString *)routeURL handler:(FFRouterHandler)handlerBlock;
@@ -583,7 +583,7 @@ end
 }];
 ```
 可通过`routerParameters`获取 URL 中的参数，`routerParameters[FFRouterParameterURLKey]`为完整的URL.
-<br>三种注册及 Route 方式：
+<br><br>三种注册及 Route 方式：
 ```objective-c
 //注册方式1:
 + (void)registerRouteURL:(NSString *)routeURL handler:(FFRouterHandler)handlerBlock;
