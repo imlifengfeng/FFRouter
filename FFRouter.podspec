@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'FFRouter'
-  s.version      = '1.1.0'
+  s.version      = '1.1.1'
   s.summary      = 'Powerful and easy-to-use URL routing library in iOS that supports URL Rewrite'
   s.homepage     = "https://github.com/imlifengfeng/FFRouter"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }

@@ -11,6 +11,7 @@ FFRouter is a powerful and easy-to-use URL routing library in iOS that supports 
 ### function
 
 - [x] Have basic URL registration, Route, cancel registration, print Log, etc.
+- [x] Support forward and reverse pass values
 - [x] Support the use of wildcards (*) to register URL
 - [x] Support URL Rewrite
 - [x] Support get the original URL parameter or URLComponents when Rewrite, and can be URL Encode or Decode
@@ -163,7 +164,8 @@ First
 + (void)setLogEnabled:(BOOL)enable;
 ```
 ###### 【Notes】
-(1)Register URL:
+(1)Register URL
+<br>Three types of URL：
 ```objective-c
 [FFRouter registerRouteURL:@"protocol://page/routerDetails/:id" handler:^(NSDictionary *routerParameters) {
    //Callbacks of Route's URL match with this registration URL 
@@ -181,6 +183,34 @@ First
 }];
 ```
 The parameters in the URL can be obtained by `routerParameters`，`routerParameters[FFRouterParameterURLKey]`Is the full URL.
+<br>Three ways of registration and Route：
+```objective-c
+//Way 1:
++ (void)registerRouteURL:(NSString *)routeURL handler:(FFRouterHandler)handlerBlock;
+
+//Use the following two Route methods
++ (void)routeURL:(NSString *)URL;
++ (void)routeURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters;
+
+
+
+//Way 2:
++ (void)registerObjectRouteURL:(NSString *)routeURL handler:(FFObjectRouterHandler)handlerBlock;
+
+//Use the following two Route methods
++ (id)routeObjectURL:(NSString *)URL;
++ (id)routeObjectURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters;
+
+
+
+//Way 3:
++ (void)registerCallbackRouteURL:(NSString *)routeURL handler:(FFCallbackRouterHandler)handlerBlock;
+
+//Use the following two Route methods
++ (void)routeCallbackURL:(NSString *)URL targetCallback:(FFRouterCallback)targetCallback;
++ (void)routeCallbackURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters targetCallback:(FFRouterCallback)targetCallback;
+
+```
 <br><br><br>(2)When you need to use the following methods：
 ```objective-c
 + (id)routeObjectURL:(NSString *)URL;
@@ -381,6 +411,7 @@ FFRouter 是 iOS 中一个强大且易用的 URL 路由库，支持 URL Rewrite�
 ### 功能
 
 - [x] 具备基本的 URL 注册、Route、取消注册、打印 Log 等
+- [x] 支持正向、反向传值
 - [x] 支持使用通配符(*)注册 URL
 - [x] 支持 URL Rewrite
 - [x] 支持 Rewrite 时获取原 URL 参数或 URLComponents，并可对其进行URL Encode或 Decode
@@ -533,7 +564,8 @@ end
 + (void)setLogEnabled:(BOOL)enable;
 ```
 ###### 【备注】
-(1)注册 URL:
+(1)注册 URL
+<br>三种 URL 类型：
 ```objective-c
 [FFRouter registerRouteURL:@"protocol://page/routerDetails/:id" handler:^(NSDictionary *routerParameters) {
    //Route的URL与本次注册URL匹配时的回调 
@@ -551,6 +583,35 @@ end
 }];
 ```
 可通过`routerParameters`获取 URL 中的参数，`routerParameters[FFRouterParameterURLKey]`为完整的URL.
+<br>三种注册及 Route 方式：
+```objective-c
+//注册方式1:
++ (void)registerRouteURL:(NSString *)routeURL handler:(FFRouterHandler)handlerBlock;
+
+//与下面两个 Route 方法配合使用
++ (void)routeURL:(NSString *)URL;
++ (void)routeURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters;
+
+
+
+//注册方式2:
++ (void)registerObjectRouteURL:(NSString *)routeURL handler:(FFObjectRouterHandler)handlerBlock;
+
+//与下面两个 Route 方法配合使用，可同步反向传值
++ (id)routeObjectURL:(NSString *)URL;
++ (id)routeObjectURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters;
+
+
+
+//注册方式3:
++ (void)registerCallbackRouteURL:(NSString *)routeURL handler:(FFCallbackRouterHandler)handlerBlock;
+
+//与下面两个 Route 方法配合使用，可异步反向传值
++ (void)routeCallbackURL:(NSString *)URL targetCallback:(FFRouterCallback)targetCallback;
++ (void)routeCallbackURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters targetCallback:(FFRouterCallback)targetCallback;
+
+```
+
 <br><br><br>(2)当需要通过以下方法：
 ```objective-c
 + (id)routeObjectURL:(NSString *)URL;
