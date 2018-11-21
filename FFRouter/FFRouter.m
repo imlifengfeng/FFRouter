@@ -12,9 +12,17 @@
 static NSString *const FFRouterWildcard = @"*";
 static NSString *FFSpecialCharacters = @"/?&.";
 
-static NSString *const FFRouterHandlerBlockKey = @"FFRouterHandlerBlock";
+static NSString *const FFRouterCoreKey = @"FFRouterCore";
+static NSString *const FFRouterCoreBlockKey = @"FFRouterCoreBlock";
+static NSString *const FFRouterCoreTypeKey = @"FFRouterCoreType";
 
 NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
+
+typedef NS_ENUM(NSInteger,FFRouterType) {
+    FFRouterTypeDefault = 0,
+    FFRouterTypeObject = 1,
+    FFRouterTypeCallback = 2,
+};
 
 @interface FFRouter()
 
@@ -62,7 +70,7 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
 }
 
 + (void)routeURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters {
-    FFRouterLog(@"Route to URL:%@\nparameters:%@",URL,parameters);
+    FFRouterLog(@"Route to URL:%@\nwithParameters:%@",URL,parameters);
     NSString *rewriteURL = [FFRouterRewrite rewriteURL:URL];
     URL = [rewriteURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
@@ -80,13 +88,19 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
     }];
     
     if (routerParameters) {
-        FFRouterHandler handler = routerParameters[FFRouterHandlerBlockKey];
-        if (parameters) {
-            [routerParameters addEntriesFromDictionary:parameters];
+        NSDictionary *coreDic = routerParameters[FFRouterCoreKey];
+        FFRouterHandler handler = coreDic[FFRouterCoreBlockKey];
+        FFRouterType type = [coreDic[FFRouterCoreTypeKey] integerValue];
+        if (type != FFRouterTypeDefault) {
+            [self routeTypeCheckLogWithCorrectType:type url:URL];
+            return;
         }
         
         if (handler) {
-            [routerParameters removeObjectForKey:FFRouterHandlerBlockKey];
+            if (parameters) {
+                [routerParameters addEntriesFromDictionary:parameters];
+            }
+            [routerParameters removeObjectForKey:FFRouterCoreKey];
             handler(routerParameters);
         }
     }
@@ -97,7 +111,7 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
 }
 
 + (id)routeObjectURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters {
-    FFRouterLog(@"Route to ObjectURL:%@\nparameters:%@",URL,parameters);
+    FFRouterLog(@"Route to ObjectURL:%@\nwithParameters:%@",URL,parameters);
     NSString *rewriteURL = [FFRouterRewrite rewriteURL:URL];
     URL = [rewriteURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
@@ -112,13 +126,18 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
             routerParameters[key] = [NSString stringWithFormat:@"%@",obj];
         }
     }];
-    
-    FFObjectRouterHandler handler = routerParameters[FFRouterHandlerBlockKey];
+    NSDictionary *coreDic = routerParameters[FFRouterCoreKey];
+    FFObjectRouterHandler handler = coreDic[FFRouterCoreBlockKey];
+    FFRouterType type = [coreDic[FFRouterCoreTypeKey] integerValue];
+    if (type != FFRouterTypeObject) {
+        [self routeTypeCheckLogWithCorrectType:type url:URL];
+        return nil;
+    }
     if (handler) {
         if (parameters) {
             [routerParameters addEntriesFromDictionary:parameters];
         }
-        [routerParameters removeObjectForKey:FFRouterHandlerBlockKey];
+        [routerParameters removeObjectForKey:FFRouterCoreKey];
         return handler(routerParameters);
     }
     return nil;
@@ -129,7 +148,7 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
 }
 
 + (void)routeCallbackURL:(NSString *)URL withParameters:(NSDictionary<NSString *, id> *)parameters targetCallback:(FFRouterCallback)targetCallback {
-    FFRouterLog(@"Route to URL:%@\nparameters:%@",URL,parameters);
+    FFRouterLog(@"Route to URL:%@\nwithParameters:%@",URL,parameters);
     NSString *rewriteURL = [FFRouterRewrite rewriteURL:URL];
     URL = [rewriteURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
@@ -147,13 +166,19 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
     }];
     
     if (routerParameters) {
-        FFCallbackRouterHandler handler = routerParameters[FFRouterHandlerBlockKey];
+        NSDictionary *coreDic = routerParameters[FFRouterCoreKey];
+        FFCallbackRouterHandler handler = coreDic[FFRouterCoreBlockKey];
+        FFRouterType type = [coreDic[FFRouterCoreTypeKey] integerValue];
+        if (type != FFRouterTypeCallback) {
+            [self routeTypeCheckLogWithCorrectType:type url:URL];
+            return;
+        }
         if (parameters) {
             [routerParameters addEntriesFromDictionary:parameters];
         }
         
         if (handler) {
-            [routerParameters removeObjectForKey:FFRouterHandlerBlockKey];
+            [routerParameters removeObjectForKey:FFRouterCoreKey];
             handler(routerParameters,^(id callbackObjc){
                 if (targetCallback) {
                     targetCallback(callbackObjc);
@@ -186,21 +211,24 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
 - (void)addRouteURL:(NSString *)routeUrl handler:(FFRouterHandler)handlerBlock {
     NSMutableDictionary *subRoutes = [self addURLPattern:routeUrl];
     if (handlerBlock && subRoutes) {
-        subRoutes[FFRouterHandlerBlockKey] = [handlerBlock copy];
+        NSDictionary *coreDic = @{FFRouterCoreBlockKey:[handlerBlock copy],FFRouterCoreTypeKey:@(FFRouterTypeDefault)};
+        subRoutes[FFRouterCoreKey] = coreDic;
     }
 }
 
 - (void)addObjectRouteURL:(NSString *)routeUrl handler:(FFObjectRouterHandler)handlerBlock {
     NSMutableDictionary *subRoutes = [self addURLPattern:routeUrl];
     if (handlerBlock && subRoutes) {
-        subRoutes[FFRouterHandlerBlockKey] = [handlerBlock copy];
+        NSDictionary *coreDic = @{FFRouterCoreBlockKey:[handlerBlock copy],FFRouterCoreTypeKey:@(FFRouterTypeObject)};
+        subRoutes[FFRouterCoreKey] = coreDic;
     }
 }
 
 - (void)addCallbackRouteURL:(NSString *)routeUrl handler:(FFCallbackRouterHandler)handlerBlock {
     NSMutableDictionary *subRoutes = [self addURLPattern:routeUrl];
     if (handlerBlock && subRoutes) {
-        subRoutes[FFRouterHandlerBlockKey] = [handlerBlock copy];
+        NSDictionary *coreDic = @{FFRouterCoreBlockKey:[handlerBlock copy],FFRouterCoreTypeKey:@(FFRouterTypeCallback)};
+        subRoutes[FFRouterCoreKey] = coreDic;
     }
 }
 
@@ -236,7 +264,7 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
         NSMutableDictionary *route = [self.routes valueForKeyPath:componentKey];
         
         if (route.count > 1 && firstPoll) {
-            [route removeObjectForKey:FFRouterHandlerBlockKey];
+            [route removeObjectForKey:FFRouterCoreKey];
             break;
         }
         if (route.count <= 1 && firstPoll){
@@ -336,7 +364,7 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
         }
     }
     
-    if (!subRoutes[FFRouterHandlerBlockKey]) {
+    if (!subRoutes[FFRouterCoreKey]) {
         return nil;
     }
     
@@ -346,9 +374,21 @@ NSString *const FFRouterParameterURLKey = @"FFRouterParameterURL";
         parameters[item.name] = item.value;
     }
     
-    parameters[FFRouterHandlerBlockKey] = [subRoutes[FFRouterHandlerBlockKey] copy];
-    
+    parameters[FFRouterCoreKey] = [subRoutes[FFRouterCoreKey] copy];
     return parameters;
+}
+
++ (void)routeTypeCheckLogWithCorrectType:(FFRouterType)correctType url:(NSString *)URL{
+    if (correctType == FFRouterTypeDefault) {
+        FFRouterErrorLog(@"You must use [routeURL:] or [routeURL: withParameters:] to Route URL:%@",URL);
+        NSAssert(NO, @"Method using errors, please see the console log for details.");
+    }else if (correctType == FFRouterTypeObject) {
+        FFRouterErrorLog(@"You must use [routeObjectURL:] or [routeObjectURL: withParameters:] to Route URL:%@",URL);
+        NSAssert(NO, @"Method using errors, please see the console log for details.");
+    }else if (correctType == FFRouterTypeCallback) {
+        FFRouterErrorLog(@"You must use [routeCallbackURL: targetCallback:] or [routeCallbackURL: withParameters: targetCallback:] to Route URL:%@",URL);
+        NSAssert(NO, @"Method using errors, please see the console log for details.");
+    }
 }
 
 

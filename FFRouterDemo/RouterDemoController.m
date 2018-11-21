@@ -48,7 +48,7 @@
     //注册 protocol://page/routerObjectDetails
     [FFRouter registerObjectRouteURL:@"protocol://page/routerObjectDetails" handler:^id(NSDictionary *routerParameters) {
         RouterDetailController *mRouterDetailController = [[RouterDetailController alloc]init];
-        NSString *str = [NSString stringWithFormat:@"%@\n%@",routerParameters,[mRouterDetailController testDetailObjectResult]];
+        NSString *str = [NSString stringWithFormat:@"%@",[mRouterDetailController testDetailObjectResult]];
         return str;
     }];
     
@@ -97,7 +97,7 @@
 //通过routeObjectURL获取返回值
 - (IBAction)btn3Click:(id)sender {
     NSString *ret = [FFRouter routeObjectURL:@"protocol://page/routerObjectDetails"];
-    NSLog(@"routeURL并获取返回值:%@",ret);
+    self.testLabel.text = ret;
 }
 
 //通过routeCallbackURL异步回调获取返回值
