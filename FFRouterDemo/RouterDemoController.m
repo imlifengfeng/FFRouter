@@ -102,9 +102,10 @@
 
 //通过routeCallbackURL异步回调获取返回值
 - (IBAction)btn4Click:(id)sender {
-    [FFRouter routeCallbackURL:@"protocol://page/RouterCallbackDetails?nickname=imlifengfeng&nation=中国" targetCallback:^(id callbackObjc) {
-        self.testLabel.text = [NSString stringWithFormat:@"%@",callbackObjc];
-    }];
+//    [FFRouter routeCallbackURL:@"protocol://page/RouterCallbackDetails?nickname=imlifengfeng&nation=中国" targetCallback:^(id callbackObjc) {
+//        self.testLabel.text = [NSString stringWithFormat:@"%@",callbackObjc];
+//    }];
+    [FFRouter routeURL:@"protocol://page/RouterCallbackDetails?nickname=imlifengfeng&nation=中国"];
 }
 
 //通配符(*)方式注册URL
