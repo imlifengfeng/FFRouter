@@ -3,9 +3,11 @@
 </p>
 
 <p align="center">
+
 [![Version](https://img.shields.io/cocoapods/v/FFRouter.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
 [![License](https://img.shields.io/cocoapods/l/FFRouter.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
 [![Platform](https://img.shields.io/cocoapods/p/FFRouter.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
+
 </p>
 
 ### [中文教程](https://github.com/imlifengfeng/FFRouter#中文使用说明)
