@@ -2,13 +2,11 @@
   <img src="FFRouter_logo.png" title="FFRouter logo" float=left>
 </p>
 
-<center>
-
-[![Version](https://img.shields.io/cocoapods/v/FFRouter.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
-[![License](https://img.shields.io/cocoapods/l/FFRouter.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
-[![Platform](https://img.shields.io/cocoapods/p/FFRouter.svg?style=flat)](http://cocoapods.org/pods/FFRouter)
-
-</center >
+<p align="center">
+  <a href="http://cocoapods.org/pods/FFRouter"><img src="https://img.shields.io/cocoapods/v/FFRouter.svg?style=flat"></a>
+  <a href="http://cocoapods.org/pods/FFRouter"><img src="https://img.shields.io/cocoapods/l/FFRouter.svg?style=flat"></a>
+  <a href="http://cocoapods.org/pods/FFRouter"><img src="https://img.shields.io/cocoapods/p/FFRouter.svg?style=flat"></a>
+</p>
 
 ### [中文教程](https://github.com/imlifengfeng/FFRouter#中文使用说明)
 
